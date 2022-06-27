@@ -15,7 +15,6 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Component
 public class ToDoService {
 
     private ToDoRepository toDoRepository;
@@ -23,12 +22,12 @@ public class ToDoService {
     public void addToDo(ToDoAddRequest todo) {
         if (todo.getText().isEmpty() || todo.getHour() == 0) {
             throw new ToDoBadRequestException("Todo or time field can not be empty!");
-        } else {
-            ToDo newToDo = new ToDo();
-            newToDo.setText(todo.getText());
-            newToDo.setHour(todo.getHour());
-            toDoRepository.save(newToDo);
         }
+
+        ToDo newToDo = new ToDo();
+        newToDo.setText(todo.getText());
+        newToDo.setHour(todo.getHour());
+        toDoRepository.save(newToDo);
     }
 
     public List<ToDo> getAllToDos() {
@@ -41,29 +40,21 @@ public class ToDoService {
     }
 
     public void deleteToDo(Long todoid) {
-        Optional<ToDo> toDo = toDoRepository.findById(todoid);
-
-        if (toDo.isPresent()) {
-            toDoRepository.deleteById(todoid);
-        } else {
-            throw new ToDoNotFoundException("Todo can not be deleted due to not found todo with id :" + todoid);
-        }
+        toDoRepository.findById(todoid).orElseThrow(() -> new ToDoNotFoundException("Todo can not be deleted due to not found todo with id :" + todoid));;
+        toDoRepository.deleteById(todoid);
     }
 
     public void updateToDo(Long todoid, String text) {
         Optional<ToDo> toDo = toDoRepository.findById(todoid);
 
-        if (toDo.isPresent()) {
-            if (text.isEmpty()) {
-                throw new ToDoBadRequestException("Todo field can not be empty!");
-            } else {
-                ToDo newToDo = toDo.get();
-                newToDo.setText(text);
-                toDoRepository.save(newToDo);
-            }
-        } else {
-            throw new ToDoNotFoundException("Todo can not be updated due to not found todo with id :" + todoid);
-        }
+        if (!toDo.isPresent()) {
+            throw new ToDoNotFoundException("Todo can not be updated due to not found todo with id :" + todoid); }
+        if (text.isEmpty()) {
+            throw new ToDoBadRequestException("Todo field can not be empty!");}
+
+        ToDo newToDo = toDo.get();
+        newToDo.setText(text);
+        toDoRepository.save(newToDo);
     }
 
     public List<ToDoHourResponse> getTimeToDo() {
@@ -80,11 +71,14 @@ public class ToDoService {
     }
 
     public List<ToDoResponse> getOneTimeToDo(int hour) {
+        if (hour < 0 || hour>23) {
+            throw new ToDoBadRequestException("Invalid hour, hour can not be: "+ hour);
+        }
+
         List<ToDoResponse> toDoList = new ArrayList<>();
         List<ToDo> toDo = toDoRepository.findAllByHour(hour);
 
         for (int i = 0; i < toDo.size(); i++) {
-
             ToDoResponse toDoResponse = new ToDoResponse();
             toDoResponse.setID(toDo.get(i).getId());
             toDoResponse.setText(toDo.get(i).getText());

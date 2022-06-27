@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/todo")
 @AllArgsConstructor
-@Component
 public class ToDoController {
 
     private ToDoService toDoService;
