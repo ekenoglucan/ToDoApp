@@ -1,16 +1,13 @@
 package com.example.ToDoAppPost.Controller;
-
 import com.example.ToDoAppPost.Documents.ToDo;
 import com.example.ToDoAppPost.Request.ToDoAddRequest;
 import com.example.ToDoAppPost.Request.ToDoUpdateRequest;
 import com.example.ToDoAppPost.Response.ToDoHourResponse;
 import com.example.ToDoAppPost.Response.ToDoResponse;
 import com.example.ToDoAppPost.Service.ToDoService;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -49,5 +46,10 @@ public class ToDoController {
     @GetMapping("/hours")
     public List<ToDoHourResponse> getTimeToDo() {
         return toDoService.getTimeToDo();
+    }
+
+    @GetMapping("/hours/{hour}")
+    public List<ToDoResponse> getOneTimeToDo(@PathVariable int hour) {
+        return toDoService.getOneTimeToDo(hour);
     }
 }
