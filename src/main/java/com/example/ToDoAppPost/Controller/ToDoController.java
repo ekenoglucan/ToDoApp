@@ -5,8 +5,8 @@ import com.example.ToDoAppPost.Request.ToDoUpdateRequest;
 import com.example.ToDoAppPost.Response.ToDoHourResponse;
 import com.example.ToDoAppPost.Response.ToDoResponse;
 import com.example.ToDoAppPost.Service.ToDoService;
+import com.example.ToDoAppPost.Service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,6 +16,7 @@ import java.util.List;
 public class ToDoController {
 
     private ToDoService toDoService;
+    private UserService userService;
 
     @GetMapping("/{todoid}")
     public ToDoResponse getOneToDo(@PathVariable Long todoid){
@@ -24,13 +25,11 @@ public class ToDoController {
 
     @PostMapping
     public void addToDo(@RequestBody ToDoAddRequest todo){
-        toDoService.addToDo(todo);
+        toDoService.addToDo(todo, userService.getAuthenticatedUserId());
     }
 
     @GetMapping
-    public List<ToDo> getAllToDos(){
-        return toDoService.getAllToDos();
-    }
+    public List<ToDo> getAllToDos(){ return toDoService.getAllToDos(userService.getAuthenticatedUserId());}
 
     @DeleteMapping("/{todoid}")
     public void deleteToDo(@PathVariable Long todoid) {
@@ -39,8 +38,7 @@ public class ToDoController {
 
     @PutMapping("/{todoid}")
     public void updateToDo(@PathVariable Long todoid, @RequestBody ToDoUpdateRequest todo) {
-        toDoService.updateToDo(todoid, todo.getText());
-    }
+        toDoService.updateToDo(todoid, todo.getText()); }
 
     @GetMapping("/hours")
     public List<ToDoHourResponse> getTimeToDo() {

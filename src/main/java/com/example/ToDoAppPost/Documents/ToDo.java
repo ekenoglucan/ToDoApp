@@ -4,9 +4,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "toDo")
-@Getter
-@Setter
+@Table(name="toDo")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ToDo {
@@ -15,12 +13,15 @@ public class ToDo {
     @Column(name = "id")
     private Long id;
 
-    @Column(name= "todo")
+    @Column(name= "toDo")
     private String text;
 
     @Column(name= "hour")
     private int hour;
 
+    @ManyToOne
+    @JoinColumn(name= "user_id")
+    private User user;
 }
 
 

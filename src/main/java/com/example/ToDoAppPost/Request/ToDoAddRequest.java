@@ -3,6 +3,6 @@ import lombok.Data;
 
 @Data
 public class ToDoAddRequest {
-    String text;
-    int hour;
+    private String text;
+    private int hour;
 }
