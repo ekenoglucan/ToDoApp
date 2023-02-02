@@ -20,7 +20,6 @@ import javax.transaction.Transactional;
 @Transactional
 public class AuthService {
 
-    private UserService userService;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private JwtService jwtService;

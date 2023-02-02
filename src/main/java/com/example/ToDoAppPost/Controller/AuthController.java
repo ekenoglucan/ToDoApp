@@ -7,7 +7,6 @@ import com.example.ToDoAppPost.Response.AuthResponse;
 import com.example.ToDoAppPost.Service.AuthService;
 import com.example.ToDoAppPost.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
